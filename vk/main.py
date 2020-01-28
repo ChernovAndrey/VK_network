@@ -7,9 +7,7 @@ import pandas as pd
 
 class User(object):
 
-    # def __init__(self, login='+77479072208', password='puartorikokarlo787', id=181400651):
-    def __init__(self, login='+79856211067', password='Sport1998!', id=22043814):
-        # def __init__(self, login='+79856211067', password='Sport1998!', id=28929682):
+    def __init__(self, login='xxx', password='xxx', id=28929682):
         vk_session = vk_api.VkApi(login, password)
         vk_session.auth()
         self.api = vk_session.get_api()
@@ -34,7 +32,7 @@ class User(object):
     def set_relations(self):
         for i in range(self.count_nodes):
             if i % 20 == 0:
-                print('set realtions finish progress: ', i / self.count_nodes)
+                print('function set relations progress: ', i / self.count_nodes)
             try:
                 d = self.api.friends.get(user_id=self.nodes[i])
             except:
@@ -42,7 +40,7 @@ class User(object):
             cur_friends = np.array(d['items'])
             common_friends = np.intersect1d(self.nodes, cur_friends, assume_unique=True)
             self.adj_matrix.loc[self.nodes[i], common_friends] = 1
-            # self.adj_matrix.iloc[common_friends, self.nodes[i]] = 1
+            self.adj_matrix.loc[common_friends, self.nodes[i]] = 1
 
 
 U = User()
@@ -51,6 +49,6 @@ U.set_relations()
 G = nx.from_numpy_matrix(U.adj_matrix.values)
 
 nx.draw(G, with_labels=False, font_weight='bold', node_size=10)
-plt.savefig('network_julia.png')
-nx.write_gpickle(G, "julia.gpickle")
+plt.savefig('network_andrey.png')
+nx.write_gpickle(G, "andrey.gpickle")
 # plt.show()
